@@ -1,0 +1,84 @@
++<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom</title>
+    <style>
+        /* Add CSS styles for your chatroom here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #chatbox {
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 400px;
+            overflow-y: scroll;
+        }
+        #message-input, #name-input, #password-input, #chatroom-password {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="name-input" placeholder="Enter your name...">
+    <input type="password" id="password-input" placeholder="Enter the chatroom password...">
+    <button onclick="createChatroom()">Create Chatroom</button>
+    <input type="password" id="chatroom-password" placeholder="Enter a password for your chatroom..." style="display: none;">
+    <div id="chatbox">
+        <!-- Chat messages will appear here -->
+    </div>
+    <input type="text" id="message-input" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const correctPassword = "123";
+        let isChatLocked = true;
+
+        function sendMessage() {
+            const nameInput = document.getElementById("name-input");
+            const passwordInput = document.getElementById("password-input");
+            const messageInput = document.getElementById("message-input");
+            const name = nameInput.value;
+            const password = passwordInput.value;
+            const message = messageInput.value;
+            const chatbox = document.getElementById("chatbox");
+
+            if (isChatLocked && password !== correctPassword) {
+                alert("Incorrect password. Chatroom is locked.");
+                return;
+            }
+
+            const messageElement = document.createElement("p");
+            messageElement.textContent = `${name}: ${message}`;
+            chatbox.appendChild(messageElement);
+            messageInput.value = "";
+        }
+
+        function createChatroom() {
+            const chatroomPasswordInput = document.getElementById("chatroom-password");
+            chatroomPasswordInput.style.display = "block";
+
+            const chatroomPassword = chatroomPasswordInput.value;
+
+            if (!chatroomPassword) {
+                alert("Please enter a password for your chatroom.");
+                return;
+            }
+
+            isChatLocked = false;
+            alert("Chatroom created and unlocked!");
+        }
+
+        // Unlock the chatroom when the correct password is entered
+        document.getElementById("password-input").addEventListener("input", function () {
+            const password = this.value;
+            if (password === correctPassword) {
+                isChatLocked = false;
+                alert("Chatroom unlocked!");
+            }
+        });
+    </script>
+</body>
+</html>
